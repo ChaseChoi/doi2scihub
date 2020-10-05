@@ -6,6 +6,7 @@
 // @description  		Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN	高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author       		Chase Choi
+// @license				MIT
 // @match        		https://www.sciencedirect.com/*
 // @match        		https://onlinelibrary.wiley.com/doi/*
 // @match 	     		https://academic.oup.com/*
