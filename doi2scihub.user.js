@@ -17,28 +17,28 @@
 // ==/UserScript==
 
 (function () {
-	'use strict';
+    'use strict';
 
-	const defaultBaseURL = "https://sci-hub.se";
-	let sciHubBaseURL;
+    const defaultBaseURL = "https://sci-hub.se";
+    let sciHubBaseURL;
 
-	GM.xmlHttpRequest({
-		method: "GET",
-		url: "https://sci-hub.now.sh/",
-		onload: function (response) {
-			let data = response.responseText;
-			sciHubBaseURL = $('a[href^="https://sci-hub"]', data).first().attr('href') ?? defaultBaseURL
-			redirectTo(sciHubBaseURL)
-		}
-	});
+    GM.xmlHttpRequest({
+        method: "GET",
+        url: "https://sci-hub.now.sh/",
+        onload: function (response) {
+            let data = response.responseText;
+            sciHubBaseURL = $('a[href^="https://sci-hub"]', data).first().attr('href') ?? defaultBaseURL
+            redirectTo(sciHubBaseURL)
+        }
+    });
 })();
 
 function redirectTo(sciHubBaseURL) {
-	let elements = $('a[href^="https://doi.org/"]');
+    let elements = $('a[href^="https://doi.org/"]');
 
-	elements.each(function () {
-		let doiURL = $(this).attr('href');
-		$(this).attr('href', `${sciHubBaseURL}${doiURL}`);
-		$(this).css('background-color', '#FFFF00');
-	});
+    elements.each(function () {
+        let doiURL = $(this).attr('href');
+        $(this).attr('href', `${sciHubBaseURL}${doiURL}`);
+        $(this).css('background-color', '#FFFF00');
+    });
 }
