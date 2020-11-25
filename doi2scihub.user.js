@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.4
+// @version             1.0.5
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -18,6 +18,7 @@
 // @match               http*://*.webofknowledge.com/*
 // @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://pubsonline.informs.org/doi/abs/*
+// @match               https://xueshu.baidu.com/usercenter/paper/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
@@ -52,8 +53,15 @@ function redirectTo(sciHubBaseURL) {
 
     // Plain text
     let doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
+    
+    // Thieme Connect
     covertPlainTextDOI('.doi:contains("DOI: 10.")', doiRegex, sciHubBaseURL);
+
+    // Web of Science
     covertPlainTextDOI('.FR_field:contains("DOI:\n10.")', doiRegex, sciHubBaseURL);
+
+    // Baidu Scholar
+    covertPlainTextDOI('.doi_wr > .kw_main', doiRegex, sciHubBaseURL);
 }
 
 function covertPlainTextDOI(doiTextLineSelector, regexString, sciHubBaseURL) {
