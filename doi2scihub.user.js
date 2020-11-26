@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.5
+// @version             1.0.6
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -19,15 +19,15 @@
 // @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://pubsonline.informs.org/doi/abs/*
 // @match               https://xueshu.baidu.com/usercenter/paper/*
+// @match               https://academic.microsoft.com/paper/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
+const defaultBaseURL = "https://sci-hub.se";
+let sciHubBaseURL;
 
 (function () {
     'use strict';
-
-    const defaultBaseURL = "https://sci-hub.se";
-    let sciHubBaseURL;
 
     GM.xmlHttpRequest({
         method: "GET",
@@ -44,12 +44,9 @@
 function redirectTo(sciHubBaseURL) {
 
     // hyperlink
-    let elements = $('a[href^="https://doi.org/"]');
-    elements.each(function () {
-        let doiURL = $(this).attr('href');
-        $(this).attr('href', `${sciHubBaseURL}${doiURL}`);
-        $(this).css('background-color', '#FFFF00');
-    });
+    let observer = new MutationObserver(callback);
+    const config = { childList: true, subtree: true };
+    observer.observe(document, config);
 
     // Plain text
     let doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
@@ -63,6 +60,18 @@ function redirectTo(sciHubBaseURL) {
     // Baidu Scholar
     covertPlainTextDOI('.doi_wr > .kw_main', doiRegex, sciHubBaseURL);
 }
+
+const callback = function(mutationsList, observer) {
+    let elements = $('a[href^="https://doi.org/"]');
+    if (elements.length) {
+        elements.each(function () {
+            let doiURL = $(this).attr('href');
+            $(this).attr('href', `${sciHubBaseURL}${doiURL}`);
+            $(this).css('background-color', '#FFFF00');
+        });
+        observer.disconnect();
+    }
+};
 
 function covertPlainTextDOI(doiTextLineSelector, regexString, sciHubBaseURL) {
     if ($(doiTextLineSelector).length) {
