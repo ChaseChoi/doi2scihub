@@ -19,7 +19,7 @@
 // @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://pubsonline.informs.org/doi/abs/*
 // @match               https://xueshu.baidu.com/usercenter/paper/*
-// @match               https://academic.microsoft.com/paper/*
+// @match               https://academic.microsoft.com/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
@@ -69,7 +69,6 @@ const callback = function(mutationsList, observer) {
             $(this).attr('href', `${sciHubBaseURL}${doiURL}`);
             $(this).css('background-color', '#FFFF00');
         });
-        observer.disconnect();
     }
 };
 
