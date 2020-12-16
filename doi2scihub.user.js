@@ -21,6 +21,7 @@
 // @match               https://xueshu.baidu.com/usercenter/paper/*
 // @match               https://academic.microsoft.com/*
 // @match               https://www.nature.com/*
+// @match               https://robotics.sciencemag.org/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
@@ -54,6 +55,9 @@ function redirectTo(sciHubBaseURL) {
     
     // Thieme Connect
     covertPlainTextDOI('.doi:contains("DOI: 10.")', doiRegex, sciHubBaseURL);
+
+    // Science Robotics
+    covertPlainTextDOI('.meta-line:contains("DOI: 10.")', doiRegex, sciHubBaseURL);
 
     // Web of Science
     covertPlainTextDOI('.FR_field:contains("DOI:\n10.")', doiRegex, sciHubBaseURL);
