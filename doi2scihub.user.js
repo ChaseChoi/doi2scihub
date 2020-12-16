@@ -20,6 +20,7 @@
 // @match               https://pubsonline.informs.org/doi/abs/*
 // @match               https://xueshu.baidu.com/usercenter/paper/*
 // @match               https://academic.microsoft.com/*
+// @match               https://www.nature.com/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
