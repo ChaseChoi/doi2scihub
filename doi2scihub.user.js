@@ -14,7 +14,7 @@
 // @match               https://link.springer.com/*
 // @match               https://ieeexplore.ieee.org/*
 // @match               https://www.ingentaconnect.com/*
-// @match               https://pubs.acs.org/doi/abs/*
+// @match               https://pubs.acs.org/doi/*
 // @match               http*://*.webofknowledge.com/*
 // @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://pubsonline.informs.org/doi/abs/*
