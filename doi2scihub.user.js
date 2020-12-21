@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.8
+// @version             1.0.9
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -25,8 +25,11 @@
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
+
+// global variables
 const defaultBaseURL = "https://sci-hub.se";
 let sciHubBaseURL;
+const doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
 
 (function () {
     'use strict';
@@ -38,12 +41,12 @@ let sciHubBaseURL;
             let data = response.responseText;
             sciHubBaseURL = $('li > a[href^="https://sci-hub"]', data).first().attr('href') ?? defaultBaseURL
             sciHubBaseURL += sciHubBaseURL.endsWith("/") ? "" : "/"
-            redirectTo(sciHubBaseURL)
+            redirectToSciHub()
         }
     });
 })();
 
-function redirectTo(sciHubBaseURL) {
+function redirectToSciHub() {
 
     // hyperlink
     let observer = new MutationObserver(callback);
@@ -51,19 +54,18 @@ function redirectTo(sciHubBaseURL) {
     observer.observe(document, config);
 
     // Plain text
-    let doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
     
     // Thieme Connect
-    covertPlainTextDOI('.doi:contains("DOI: 10.")', doiRegex, sciHubBaseURL);
+    covertPlainTextDOI('.doi:contains("DOI: 10.")');
 
     // Science Robotics
-    covertPlainTextDOI('.meta-line:contains("DOI: 10.")', doiRegex, sciHubBaseURL);
+    covertPlainTextDOI('.meta-line:contains("DOI: 10.")');
 
     // Web of Science
-    covertPlainTextDOI('.FR_field:contains("DOI:\n10.")', doiRegex, sciHubBaseURL);
+    covertPlainTextDOI('.FR_field:contains("DOI:\n10.")');
 
     // Baidu Scholar
-    covertPlainTextDOI('.doi_wr > .kw_main', doiRegex, sciHubBaseURL);
+    covertPlainTextDOI('.doi_wr > .kw_main');
 }
 
 const callback = function(mutationsList, observer) {
@@ -77,9 +79,9 @@ const callback = function(mutationsList, observer) {
     }
 };
 
-function covertPlainTextDOI(doiTextLineSelector, regexString, sciHubBaseURL) {
+function covertPlainTextDOI(doiTextLineSelector) {
     if ($(doiTextLineSelector).length) {
-        let modified = $(doiTextLineSelector).html().replace(regexString, `<a href="${sciHubBaseURL}` + '$1" target="_blank" id="sci-hub-link">$1</a>');
+        let modified = $(doiTextLineSelector).html().replace(doiRegex, `<a href="${sciHubBaseURL}` + '$1" target="_blank" id="sci-hub-link">$1</a>');
         $(doiTextLineSelector).html(modified);
         $('#sci-hub-link').css('background-color', '#FFFF00');
     }
