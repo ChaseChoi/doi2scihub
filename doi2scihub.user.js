@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.12
+// @version             1.0.13
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -23,6 +23,7 @@
 // @match               https://www.nature.com/*
 // @match               https://*.sciencemag.org/*
 // @match               https://pubs.rsc.org/*
+// @match               https://schlr.cnki.net/Detail/index/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
@@ -67,6 +68,9 @@ function redirectToSciHub() {
 
     // Baidu Scholar
     covertPlainTextDOI('.doi_wr > .kw_main');
+
+    // CNKI Scholar
+    covertPlainTextDOI('.doc-doi > a');
 }
 
 const callback = function(mutationsList, observer) {
