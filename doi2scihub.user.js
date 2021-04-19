@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.14
+// @version             1.0.15
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -16,6 +16,7 @@
 // @match               https://www.ingentaconnect.com/*
 // @match               https://pubs.acs.org/doi/*
 // @match               http*://*.webofknowledge.com/*
+// @match               https://www.webofscience.com/wos/*
 // @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://pubsonline.informs.org/doi/abs/*
 // @match               https://xueshu.baidu.com/usercenter/paper/*
@@ -59,22 +60,28 @@ function redirectToSciHub() {
     // Plain text
     
     // Thieme Connect
-    covertPlainTextDOI('.doi:contains("DOI: 10.")');
+    convertPlainTextDOI('.doi:contains("DOI: 10.")');
 
     // Science
-    covertPlainTextDOI('.meta-line:contains("DOI: 10.")');
+    convertPlainTextDOI('.meta-line:contains("DOI: 10.")');
 
     // Web of Science
-    covertPlainTextDOI('.FR_field:contains("DOI:")');
+    convertPlainTextDOI('.FR_field:contains("DOI:")');
 
     // Baidu Scholar
-    covertPlainTextDOI('.doi_wr > .kw_main');
+    convertPlainTextDOI('.doi_wr > .kw_main');
 
     // CNKI Scholar
-    covertPlainTextDOI('.doc-doi > a');
+    convertPlainTextDOI('.doc-doi > a');
 }
 
 const callback = function(mutationsList, observer) {
+    
+    // Web of Science New Interface
+    if (!$('#sci-hub-link').length) {
+        convertPlainTextDOI('span#FullRTa-DOI');
+    }
+
     let elements = $('a[href^="https://doi.org/"]');
     if (elements.length) {
         elements.each(function () {
@@ -85,7 +92,7 @@ const callback = function(mutationsList, observer) {
     }
 };
 
-function covertPlainTextDOI(doiTextLineSelector) {
+function convertPlainTextDOI(doiTextLineSelector) {
     if ($(doiTextLineSelector).length) {
         let modified = $(doiTextLineSelector).html().replace(doiRegex, `<a href="${sciHubBaseURL}` + '$1" target="_blank" id="sci-hub-link">$1</a>');
         $(doiTextLineSelector).html(modified);
