@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.15
+// @version             1.0.16
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
