@@ -26,6 +26,8 @@
 // @match               https://pubs.rsc.org/*
 // @match               https://schlr.cnki.net/Detail/index/*
 // @match               https://schlr.cnki.net//Detail/index/*
+// @match               https://www.tandfonline.com/*
+// @match               https://www.jstor.org/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
