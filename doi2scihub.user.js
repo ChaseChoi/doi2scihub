@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.16
+// @version             1.0.17
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -28,6 +28,8 @@
 // @match               https://schlr.cnki.net//Detail/index/*
 // @match               https://www.tandfonline.com/*
 // @match               https://www.jstor.org/*
+// @match               https://www.ncbi.nlm.nih.gov/*
+// @match               http://www.socolar.com/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
@@ -36,6 +38,8 @@
 const defaultBaseURL = "https://sci-hub.se";
 let sciHubBaseURL;
 const doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
+const completePrefix = ['http://dx.doi.org/', 'https://doi.org/'];
+const partialPrefix = ['//dx.doi.org/'];
 
 (function () {
     'use strict';
@@ -55,6 +59,10 @@ const doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
 function redirectToSciHub() {
 
     // hyperlink
+    
+    convertHrefDOI(completePrefix, true);
+    convertHrefDOI(partialPrefix, false);
+
     let observer = new MutationObserver(callback);
     const config = { childList: true, subtree: true };
     observer.observe(document, config);
@@ -84,14 +92,8 @@ const callback = function(mutationsList, observer) {
         convertPlainTextDOI('span#FullRTa-DOI');
     }
 
-    let elements = $('a[href^="https://doi.org/"]');
-    if (elements.length) {
-        elements.each(function () {
-            let doiURL = $(this).attr('href');
-            $(this).attr('href', `${sciHubBaseURL}${doiURL}`);
-            $(this).css('background-color', '#FFFF00');
-        });
-    }
+    convertHrefDOI(completePrefix, true);
+    convertHrefDOI(partialPrefix, false);
 };
 
 function convertPlainTextDOI(doiTextLineSelector) {
@@ -100,4 +102,22 @@ function convertPlainTextDOI(doiTextLineSelector) {
         $(doiTextLineSelector).html(modified);
         $('#sci-hub-link').css('background-color', '#FFFF00');
     }
+}
+
+function convertHrefDOI(prefixArray, isComplete) {
+    prefixArray.forEach((prefix) => {
+        let elements = $(`a[href^="${prefix}"]`);
+        if (elements.length) {
+            let doi = "";
+            elements.each(function () {
+                if (isComplete == false) {
+                    doi = $(this).text();    
+                } else {
+                    doi = $(this).attr('href');
+                }
+                $(this).attr('href', `${sciHubBaseURL}${doi}`);
+                $(this).css('background-color', '#FFFF00');
+            });
+        }
+    })
 }
