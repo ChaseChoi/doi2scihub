@@ -38,7 +38,7 @@
 const defaultBaseURL = "https://sci-hub.se";
 let sciHubBaseURL;
 const doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
-const completePrefix = ['http://dx.doi.org/', 'https://doi.org/'];
+const completePrefix = ['http://dx.doi.org/', 'https://doi.org/', 'https://dx.doi.org/'];
 const partialPrefix = ['//dx.doi.org/'];
 
 (function () {
