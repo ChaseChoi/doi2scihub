@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.18
+// @version             1.0.19
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -46,7 +46,7 @@ const partialPrefix = ['//dx.doi.org/'];
 
     GM.xmlHttpRequest({
         method: "GET",
-        url: "https://sci-hub.now.sh/",
+        url: "https://sci-hub.41610.org/",
         onload: function (response) {
             let data = response.responseText;
             sciHubBaseURL = $('li > a[href^="https://sci-hub"]', data).first().attr('href') ?? defaultBaseURL
