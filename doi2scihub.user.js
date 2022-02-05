@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.19
+// @version             1.0.20
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -30,6 +30,7 @@
 // @match               https://www.jstor.org/*
 // @match               https://www.ncbi.nlm.nih.gov/*
 // @match               http://www.socolar.com/*
+// @match               https://www.scinapse.io/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
@@ -87,9 +88,12 @@ function redirectToSciHub() {
 
 const callback = function(mutationsList, observer) {
     
-    // Web of Science New Interface
     if (!$('#sci-hub-link').length) {
+        // Web of Science New Interface
         convertPlainTextDOI('span#FullRTa-DOI');
+        
+        // scinapse
+        convertPlainTextDOI('span[class*="doiInPaperShow_doiContext"]');
     }
 
     convertHrefDOI(completePrefix, true);
