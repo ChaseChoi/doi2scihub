@@ -31,6 +31,7 @@
 // @match               https://www.ncbi.nlm.nih.gov/*
 // @match               http://www.socolar.com/*
 // @match               https://www.scinapse.io/*
+// @match               https://www.science.org/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
