@@ -7,32 +7,33 @@
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
 // @license             MIT
-// @match               https://www.sciencedirect.com/*
-// @match               https://onlinelibrary.wiley.com/doi/*
+// @match               https://*.sciencemag.org/*
+// @match               http*://*.webofknowledge.com/*
 // @match               https://academic.oup.com/*
+// @match               https://academic.microsoft.com/*
+// @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
+// @match               https://ieeexplore.ieee.org/*
 // @match               https://journals.sagepub.com/*
 // @match               https://link.springer.com/*
-// @match               https://ieeexplore.ieee.org/*
-// @match               https://www.ingentaconnect.com/*
-// @match               https://pubs.acs.org/doi/*
-// @match               http*://*.webofknowledge.com/*
-// @match               https://www.webofscience.com/wos/*
-// @match               https://www.thieme-connect.com/products/ejournals/*
-// @match               https://pubsonline.informs.org/doi/abs/*
-// @match               https://xueshu.baidu.com/usercenter/paper/*
-// @match               https://academic.microsoft.com/*
-// @match               https://www.nature.com/*
-// @match               https://*.sciencemag.org/*
+// @match               https://onlinelibrary.wiley.com/doi/*
+// @match               https://pubmed.ncbi.nlm.nih.gov/*
 // @match               https://pubs.rsc.org/*
+// @match               https://pubs.acs.org/doi/*
+// @match               https://pubsonline.informs.org/doi/abs/*
 // @match               https://schlr.cnki.net/Detail/index/*
 // @match               https://schlr.cnki.net//Detail/index/*
-// @match               https://www.tandfonline.com/*
+// @match               https://xueshu.baidu.com/usercenter/paper/*
+// @match               https://www.ingentaconnect.com/*
 // @match               https://www.jstor.org/*
+// @match               https://www.nature.com/*
 // @match               https://www.ncbi.nlm.nih.gov/*
+// @match               https://www.sciencedirect.com/*
 // @match               http://www.socolar.com/*
 // @match               https://www.scinapse.io/*
 // @match               https://www.science.org/*
-// @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
+// @match               https://www.tandfonline.com/*
+// @match               https://www.thieme-connect.com/products/ejournals/*
+// @match               https://www.webofscience.com/wos/*
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
 
@@ -85,6 +86,9 @@ function redirectToSciHub() {
 
     // CNKI Scholar
     convertPlainTextDOI('.doc-doi > a');
+
+    // PubMed
+    convertPlainTextDOI('span:contains("doi: 10")');
 }
 
 const callback = function(mutationsList, observer) {
