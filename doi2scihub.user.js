@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.21
+// @version             1.0.22
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -79,7 +79,7 @@ function redirectToSciHub() {
     convertPlainTextDOI('.meta-line:contains("DOI: 10.")');
 
     // Web of Science
-    convertPlainTextDOI('.FR_field:contains("DOI:")');
+    convertPlainTextDOI('.FullRTa-DOI:contains("DOI:")');
 
     // Baidu Scholar
     convertPlainTextDOI('.doi_wr > .kw_main');
