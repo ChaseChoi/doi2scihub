@@ -11,7 +11,6 @@
 // @match               http*://*.webofknowledge.com/*
 // @match               https://academic.oup.com/*
 // @match               https://academic.microsoft.com/*
-// @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @match               https://ieeexplore.ieee.org/*
 // @match               https://journals.sagepub.com/*
 // @match               https://link.springer.com/*
@@ -34,6 +33,7 @@
 // @match               https://www.tandfonline.com/*
 // @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://www.webofscience.com/wos/*
+// @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
 
