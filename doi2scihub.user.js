@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.23
+// @version             1.0.24
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -35,6 +35,10 @@
 // @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://www.webofscience.com/wos/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
+// @require             https://openuserjs.org/src/libs/sizzle/GM_config.js
+// @grant               GM_getValue
+// @grant               GM_setValue
+// @grant               GM_registerMenuCommand
 // @grant               GM.xmlHttpRequest
 // ==/UserScript==
 
@@ -45,9 +49,47 @@ const doiRegex = new RegExp('(10\.\\d{4,}/[-._;()/:\\w]+)');
 const completePrefix = ['http://dx.doi.org/', 'https://doi.org/', 'https://dx.doi.org/'];
 const partialPrefix = ['//dx.doi.org/'];
 
+// Initialize configuration page
+GM_config.init({
+    'id': 'DOI2Sci-Hub',
+    'title': 'Settings',
+    'fields': {
+        'UserDefinedBaseURL': {
+            'label': 'Custom Sci-Hub URL',
+            'type': 'text',
+            'default': ''
+        }
+      }
+});
+
+const callback = function(mutationsList, observer) {
+    
+    if (!$('#sci-hub-link').length) {
+        // Web of Science New Interface
+        convertPlainTextDOI('span#FullRTa-DOI');
+        
+        // scinapse
+        convertPlainTextDOI('span[class*="doiInPaperShow_doiContext"]');
+    }
+
+    convertHrefDOI(completePrefix, true);
+    convertHrefDOI(partialPrefix, false);
+};
+
 (function () {
     'use strict';
+    GM_registerMenuCommand("Settings", openSettingsPanel, "s");
+    const userDefinedBaseURL = GM_config.get('UserDefinedBaseURL');
+    
+    if (userDefinedBaseURL.length != 0) {
+        console.log('Load user-defined base URL');
+        sciHubBaseURL = userDefinedBaseURL.trim();
+        sciHubBaseURL += sciHubBaseURL.endsWith("/") ? "" : "/";
+        redirectToSciHub();
+        return
+    }
 
+    console.log('Skip user-defined base URL');
     GM.xmlHttpRequest({
         method: "GET",
         url: "https://sci-hub.41610.org/",
@@ -92,20 +134,6 @@ function redirectToSciHub() {
     convertPlainTextDOI('span:contains("doi: 10")');
 }
 
-const callback = function(mutationsList, observer) {
-    
-    if (!$('#sci-hub-link').length) {
-        // Web of Science New Interface
-        convertPlainTextDOI('span#FullRTa-DOI');
-        
-        // scinapse
-        convertPlainTextDOI('span[class*="doiInPaperShow_doiContext"]');
-    }
-
-    convertHrefDOI(completePrefix, true);
-    convertHrefDOI(partialPrefix, false);
-};
-
 function convertPlainTextDOI(doiTextLineSelector) {
     if ($(doiTextLineSelector).length) {
         let modified = $(doiTextLineSelector).html().replace(doiRegex, `<a href="${sciHubBaseURL}` + '$1" target="_blank" id="sci-hub-link">$1</a>');
@@ -130,4 +158,8 @@ function convertHrefDOI(prefixArray, isComplete) {
             });
         }
     })
+}
+
+function openSettingsPanel() {
+    GM_config.open();
 }
