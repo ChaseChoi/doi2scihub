@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.24
+// @version             1.0.25
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -32,7 +32,6 @@
 // @match               https://www.scinapse.io/*
 // @match               https://www.science.org/*
 // @match               https://www.tandfonline.com/*
-// @match               https://www.thieme-connect.com/products/ejournals/*
 // @match               https://www.webofscience.com/wos/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @require             https://openuserjs.org/src/libs/sizzle/GM_config.js
@@ -114,9 +113,6 @@ function redirectToSciHub() {
     observer.observe(document, config);
 
     // Plain text
-    
-    // Thieme Connect
-    convertPlainTextDOI('.doi:contains("DOI: 10.")');
 
     // Science
     convertPlainTextDOI('.meta-line:contains("DOI: 10.")');
@@ -136,8 +132,10 @@ function redirectToSciHub() {
 
 function convertPlainTextDOI(doiTextLineSelector) {
     if ($(doiTextLineSelector).length) {
-        let modified = $(doiTextLineSelector).html().replace(doiRegex, `<a href="${sciHubBaseURL}` + '$1" target="_blank" id="sci-hub-link">$1</a>');
-        $(doiTextLineSelector).html(modified);
+        $(doiTextLineSelector).each(function () {
+            let modified = $(this).html().replace(doiRegex, `<a href="${sciHubBaseURL}` + '$1" target="_blank" id="sci-hub-link">$1</a>');
+            $(this).html(modified);
+        });
         $('#sci-hub-link').css('background-color', '#FFFF00');
     }
 }
