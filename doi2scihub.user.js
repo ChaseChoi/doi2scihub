@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.25
+// @version             1.0.26
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -16,6 +16,7 @@
 // @match               https://journals.sagepub.com/*
 // @match               https://link.springer.com/*
 // @match               https://onlinelibrary.wiley.com/doi/*
+// @match               https://psycnet.apa.org/*
 // @match               https://pubmed.ncbi.nlm.nih.gov/*
 // @match               https://pubs.rsc.org/*
 // @match               https://pubs.acs.org/doi/*
@@ -69,6 +70,12 @@ const callback = function(mutationsList, observer) {
         
         // scinapse
         convertPlainTextDOI('span[class*="doiInPaperShow_doiContext"]');
+
+        // PsycNet
+        // journal article info page
+        convertPlainTextDOI('div.citation div a');
+        // search result page
+        convertPlainTextDOI('a[tooltip="DOI link"]');
     }
 
     convertHrefDOI(completePrefix, true);
