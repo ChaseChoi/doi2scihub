@@ -2,7 +2,7 @@
 // @name                DOI to Sci-Hub
 // @name:zh-CN          DOI跳转Sci-Hub
 // @namespace           https://greasyfork.org/users/692574
-// @version             1.0.29
+// @version             1.0.30
 // @description         Highlight DOI link on the current webpage and redirect it to Sci-Hub.
 // @description:zh-CN   高亮当前页面的DOI链接，并重定向至Sci-Hub。
 // @author              Chase Choi
@@ -36,7 +36,7 @@
 // @match               https://www.tandfonline.com/*
 // @match               https://www.webofscience.com/wos/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
-// @require             https://openuserjs.org/src/libs/sizzle/GM_config.js
+// @require             https://cdn.jsdelivr.net/gh/sizzlemctwizzle/GM_config/gm_config.min.js
 // @grant               GM_getValue
 // @grant               GM_setValue
 // @grant               GM_registerMenuCommand
