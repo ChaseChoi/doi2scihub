@@ -36,7 +36,7 @@
 // @match               https://www.tandfonline.com/*
 // @match               https://www.webofscience.com/wos/*
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
-// @require             https://cdn.jsdelivr.net/gh/sizzlemctwizzle/GM_config@2207c5c/gm_config.min.js
+// @require             https://cdn.jsdelivr.net/gh/sizzlemctwizzle/GM_config@2207c5c1322ebb56e401f03c2e581719f909762a/gm_config.js
 // @grant               GM_getValue
 // @grant               GM_setValue
 // @grant               GM_registerMenuCommand
